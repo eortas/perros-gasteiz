@@ -1,0 +1,12 @@
+# Entorno y secretos
+.env
+
+# Archivos generados por el scraper
+fotos_perros/
+__pycache__/
+*.pyc
+*.pyo
+
+# Sistema
+.DS_Store
+Thumbs.db

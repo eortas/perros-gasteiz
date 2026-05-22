@@ -1,0 +1,43 @@
+name: Scraper de Perros cada hora
+
+on:
+  schedule:
+    # Cada hora: minutos 0 de cada hora
+    - cron: "0 * * * *"
+  workflow_dispatch:  # Permite lanzarlo manualmente desde la UI de GitHub
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Necesario para poder hacer push después
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests beautifulsoup4 pandas
+
+      - name: Ejecutar scraper
+        run: python scraper.py
+
+      - name: Commit y push de cambios (CSV + fotos nuevas)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add perros_vitoria_historico.csv fotos_perros/
+          # Solo hacer commit si hay cambios
+          if git diff --cached --quiet; then
+            echo "No hay cambios nuevos. No se hace commit."
+          else
+            git commit -m "🔄 Scraping automático - $(date +'%Y-%m-%d %H:%M')"
+            git push
+          fi
