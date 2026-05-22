@@ -2,7 +2,7 @@
 .env
 
 # Archivos generados por el scraper
-fotos_perros/
+
 __pycache__/
 *.pyc
 *.pyo
