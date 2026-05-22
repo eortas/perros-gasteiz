@@ -213,7 +213,7 @@ def sync_scraped_data():
     print(f"Sincronización finalizada. Perros en la web hoy: {len(df_current)}.")
 
     # --- 9. Notificaciones Telegram ---
-    if ids_nuevos:
+    if not ids_nuevos.empty:
         print(f"Notificando {len(ids_nuevos)} perro(s) nuevo(s)...")
         notify_new_dogs(nuevos_df)
 
