@@ -19,5 +19,11 @@ echo Ejecutando scraper...
 python scraper.py
 
 echo.
+echo Subiendo cambios a GitHub...
+git add -A
+git commit -m "scraper update %date% %time%"
+git push origin main
+
+echo.
 echo Proceso completado.
 pause
