@@ -3,7 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 from datetime import datetime
-from telegram_bot import notify_new_dogs, notify_missing_dogs
+from telegram_bot import notify_new_dogs, notify_missing_dogs, notify_preadopted_dogs
 
 # Cargar .env si existe (para ejecución local)
 env_path = os.path.join(os.path.dirname(__file__), ".env")
@@ -74,6 +74,13 @@ def parse_dog_card(card):
             nota_val = txt[len("Nota"):].lstrip(":").strip()
             notas.append(nota_val)
     data["nota"] = "; ".join(notas) if notas else None
+
+    # --- Etiqueta ---
+    etiqueta_el = card.find(class_=lambda c: c and ('etiqueta' in c.lower() or 'label' in c.lower() or 'badge' in c.lower()))
+    etiqueta_text = etiqueta_el.get_text(strip=True) if etiqueta_el else ""
+    if not etiqueta_text and "preadoptado" in card.get_text().lower():
+        etiqueta_text = "preadoptado"
+    data["etiqueta"] = etiqueta_text
 
     # --- Fecha de publicación ---
     data["fecha_publicacion"] = None
@@ -168,22 +175,29 @@ def sync_scraped_data():
 
     # --- 3. Crear DataFrame con la captura de hoy ---
     df_current = pd.DataFrame(all_dogs).set_index("id")
-    df_current["estado"] = "activo"
+    df_current["estado"] = df_current.apply(
+        lambda row: "preadoptado" if (row.get("nota") and "preadoptado" in str(row["nota"]).lower()) or (row.get("etiqueta") and "preadoptado" in str(row["etiqueta"]).lower()) else "activo",
+        axis=1
+    )
     df_current["fecha_deteccion"] = today_str
     df_current["fecha_desaparicion"] = None
 
     # --- 4. Cargar CSV maestro o crearlo ---
     if os.path.exists(CSV_FILE):
         df_master = pd.read_csv(CSV_FILE, dtype={"id": str}).set_index("id")
+        for col in ["estado", "fecha_desaparicion"]:
+            if col in df_master.columns:
+                df_master[col] = df_master[col].astype(object)
     else:
         df_current.to_csv(CSV_FILE, encoding="utf-8")
         print(f"Archivo inicial creado con {len(df_current)} perros activos.")
         return
 
-    # --- 5. Detectar bajas ---
-    perros_activos_anteriormente = df_master[df_master["estado"] == "activo"].index
+    # --- 5. Detectar bajas (solo cuando el anuncio desaparece por completo) ---
+    # Incluye tanto activos como preadoptados: si ya no aparecen en la web, es baja
+    perros_en_seguimiento = df_master[df_master["estado"].isin(["activo", "preadoptado"])].index
     perros_hoy = df_current.index
-    ids_desaparecidos = perros_activos_anteriormente.difference(perros_hoy)
+    ids_desaparecidos = perros_en_seguimiento.difference(perros_hoy)
 
     if not ids_desaparecidos.empty:
         print(f"Detectados {len(ids_desaparecidos)} perros que desaparecen del catálogo.")
@@ -194,7 +208,13 @@ def sync_scraped_data():
     ids_nuevos = perros_hoy.difference(df_master.index)
     nuevos_df = df_current.loc[ids_nuevos].reset_index().to_dict("records") if not ids_nuevos.empty else []
 
-    # --- 7. Upsert de datos nuevos/actualizados ---
+    # --- 7. Detectar perros que pasan de activo a preadoptado ---
+    ids_activos_antes = df_master[df_master["estado"] == "activo"].index
+    ids_preadoptados_hoy = df_current[df_current["estado"] == "preadoptado"].index
+    ids_nuevos_preadoptados = ids_preadoptados_hoy.intersection(ids_activos_antes).difference(ids_nuevos)
+    preadoptados_df = df_current.loc[ids_nuevos_preadoptados].reset_index().to_dict("records") if not ids_nuevos_preadoptados.empty else []
+
+    # --- 8. Upsert de datos nuevos/actualizados ---
     for idx, row in df_current.iterrows():
         if idx in df_master.index:
             df_master.loc[idx, ["raza", "sexo", "tamano", "edad", "nota",
@@ -202,20 +222,24 @@ def sync_scraped_data():
                                 "local_img_path", "estado"]] = [
                 row["raza"], row["sexo"], row["tamano"], row["edad"], row["nota"],
                 row["fecha_publicacion"], row["img_url"], row["img_url_full"],
-                row["local_img_path"], "activo"
+                row["local_img_path"], row["estado"]
             ]
             df_master.loc[idx, "fecha_desaparicion"] = None
         else:
             df_master.loc[idx] = row
 
-    # --- 8. Guardar CSV ---
+    # --- 9. Guardar CSV ---
     df_master.sort_index().to_csv(CSV_FILE, encoding="utf-8")
     print(f"Sincronización finalizada. Perros en la web hoy: {len(df_current)}.")
 
-    # --- 9. Notificaciones Telegram ---
+    # --- 10. Notificaciones Telegram ---
     if not ids_nuevos.empty:
         print(f"Notificando {len(ids_nuevos)} perro(s) nuevo(s)...")
         notify_new_dogs(nuevos_df)
+
+    if not ids_nuevos_preadoptados.empty:
+        print(f"Notificando {len(ids_nuevos_preadoptados)} perro(s) preadoptado(s)...")
+        notify_preadopted_dogs(preadoptados_df)
 
     if not ids_desaparecidos.empty:
         print(f"Notificando {len(ids_desaparecidos)} perro(s) desaparecido(s)...")

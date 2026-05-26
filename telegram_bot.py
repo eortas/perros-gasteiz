@@ -105,7 +105,7 @@ def notify_missing_dogs(desaparecidos_ids, df_master):
     desaparecidos_ids: lista de IDs (strings) que ya no aparecen.
     df_master: DataFrame con los datos históricos para obtener info de cada perro.
     """
-    if not desaparecidos_ids:
+    if len(desaparecidos_ids) == 0:
         return
 
     for dog_id in desaparecidos_ids:
@@ -133,3 +133,22 @@ def notify_missing_dogs(desaparecidos_ids, df_master):
                 _send_message(msg)
         except (KeyError, TypeError):
             _send_message(f"❌ Perro {dog_id} ha desaparecido (datos no disponibles)")
+
+
+def notify_preadopted_dogs(preadoptados):
+    """
+    Envía notificación individual por cada perro que pasa a estado preadoptado.
+    preadoptados: lista de dicts con los datos de los perros preadoptados.
+    """
+    if not preadoptados:
+        return
+
+    for d in preadoptados:
+        msg = _formatear_mensaje_perro(d, prefijo="📋")
+        # Añadir línea indicando que está preadoptado
+        msg = msg.replace("📋", "📋 PREADOPTADO")
+        msg += "\n\nEste perro ha pasado a estado de preadopción ✅"
+        if d.get("local_img_path") and os.path.exists(d["local_img_path"]):
+            _send_photo(d["local_img_path"], msg)
+        else:
+            _send_message(msg)
