@@ -36,7 +36,7 @@ id,raza,sexo,tamano,edad,nota,fecha_publicacion,img_url,img_url_full,local_img_p
 8004,Mestizo,Macho,Grande,Viejo (10 años o más),":
 						Ubicado en el CPA.",27 marzo 2026,https://www.vitoria-gasteiz.org/docs/g06/6615/8004/8004_clip.JPG,https://www.vitoria-gasteiz.org/docs/g06/6615/8004/8004.JPG,fotos_perros/8004.jpg,activo,2026-05-22,
 8066,Mestizo,Macho,Grande,Joven (7 meses - 2 años),":
-						Preadoptado - No disponible",Ayer 13:18,https://www.vitoria-gasteiz.org/docs/g06/6669/8066/8066_clip.jpg,https://www.vitoria-gasteiz.org/docs/g06/6669/8066/8066.jpg,fotos_perros/8066.jpg,preadoptado,2026-05-22,
+						Preadoptado - No disponible",24 junio 2026,https://www.vitoria-gasteiz.org/docs/g06/6669/8066/8066_clip.jpg,https://www.vitoria-gasteiz.org/docs/g06/6669/8066/8066.jpg,fotos_perros/8066.jpg,preadoptado,2026-05-22,
 8084,Mestizo,Macho,Grande,Adulto (2 - 10 años),":
 						Ubicado en el CPA.",26 mayo 2026,https://www.vitoria-gasteiz.org/docs/g06/6686/8084/8084_clip.jpg,https://www.vitoria-gasteiz.org/docs/g06/6686/8084/8084.jpg,fotos_perros/8084.jpg,desaparecido,2026-05-26,2026-05-28
 8102,Rottweiler,Macho,Grande,Adulto (2 - 10 años),":
@@ -82,11 +82,11 @@ id,raza,sexo,tamano,edad,nota,fecha_publicacion,img_url,img_url_full,local_img_p
 8182,Border Collie,Hembra,Mediano,Joven (7 meses - 2 años),":
 						Ubicado en el CPA.",4 junio 2026,https://www.vitoria-gasteiz.org/docs/g06/6771/8182/8182_clip.jpeg,https://www.vitoria-gasteiz.org/docs/g06/6771/8182/8182.jpeg,fotos_perros/8182.jpg,desaparecido,2026-05-22,2026-06-10
 8189,Pastor belga malinois,Hembra,Mediano,Joven (7 meses - 2 años),":
-						Ubicado en el CPA.",Ayer 16:45,https://www.vitoria-gasteiz.org/docs/g06/6778/8189/8189_clip.jpg,https://www.vitoria-gasteiz.org/docs/g06/6778/8189/8189.jpg,fotos_perros/8189.jpg,activo,2026-06-18,
+						Ubicado en el CPA.",24 junio 2026,https://www.vitoria-gasteiz.org/docs/g06/6778/8189/8189_clip.jpg,https://www.vitoria-gasteiz.org/docs/g06/6778/8189/8189.jpg,fotos_perros/8189.jpg,activo,2026-06-18,
 8194,Mestizo,Macho,Mediano,Joven (7 meses - 2 años),":
-						Preadoptado - No disponible",Hoy 12:35,https://www.vitoria-gasteiz.org/docs/g06/6785/8194/8194_clip.JPG,https://www.vitoria-gasteiz.org/docs/g06/6785/8194/8194.JPG,fotos_perros/8194.jpg,preadoptado,2026-06-01,
+						Preadoptado - No disponible",Ayer 12:35,https://www.vitoria-gasteiz.org/docs/g06/6785/8194/8194_clip.JPG,https://www.vitoria-gasteiz.org/docs/g06/6785/8194/8194.JPG,fotos_perros/8194.jpg,preadoptado,2026-06-01,
 8200,Mestizo,Macho,Mediano,Joven (7 meses - 2 años),":
-						Ubicado en el CPA.",Ayer 16:44,https://www.vitoria-gasteiz.org/docs/g06/6790/8200/8200_clip.JPG,https://www.vitoria-gasteiz.org/docs/g06/6790/8200/8200.JPG,fotos_perros/8200.jpg,activo,2026-06-03,
+						Ubicado en el CPA.",24 junio 2026,https://www.vitoria-gasteiz.org/docs/g06/6790/8200/8200_clip.JPG,https://www.vitoria-gasteiz.org/docs/g06/6790/8200/8200.JPG,fotos_perros/8200.jpg,activo,2026-06-03,
 8204,Mestizo,Hembra,Mediano,Cachorro (0 - 7 meses),":
 						Pendiente de cumplir 15 días legales de retención. 
 
@@ -100,4 +100,4 @@ id,raza,sexo,tamano,edad,nota,fecha_publicacion,img_url,img_url_full,local_img_p
 8255,Mestizo,Hembra,Pequeño,Viejo (10 años o más),":
 						Ubicado en el CPA. 
 
- Pendiente de cumplir 15 días legales de retención.",Hoy 17:30,https://www.vitoria-gasteiz.org/docs/g06/6834/8255/8255_clip.jpeg,https://www.vitoria-gasteiz.org/docs/g06/6834/8255/8255.jpeg,fotos_perros/8255.jpg,activo,2026-06-25,
+ Pendiente de cumplir 15 días legales de retención.",Ayer 17:30,https://www.vitoria-gasteiz.org/docs/g06/6834/8255/8255_clip.jpeg,https://www.vitoria-gasteiz.org/docs/g06/6834/8255/8255.jpeg,fotos_perros/8255.jpg,activo,2026-06-25,
