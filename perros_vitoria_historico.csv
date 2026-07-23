@@ -100,7 +100,7 @@ id,raza,sexo,tamano,edad,nota,fecha_publicacion,img_url,img_url_full,local_img_p
 8241,Pitbull Terrier,Macho,Grande,Adulto (2 - 10 años),":
 						Ubicado en el CPA.",2 julio 2026,https://www.vitoria-gasteiz.org/docs/g06/6821/8241/8241_clip.jpg,https://www.vitoria-gasteiz.org/docs/g06/6821/8241/8241.jpg,fotos_perros/8241.jpg,activo,2026-07-02,
 8255,Mestizo,Hembra,Pequeño,Viejo (10 años o más),":
-						Ubicado en el CPA.",15 julio 2026,https://www.vitoria-gasteiz.org/docs/g06/6834/8255/8255_clip.jpeg,https://www.vitoria-gasteiz.org/docs/g06/6834/8255/8255.jpeg,fotos_perros/8255.jpg,activo,2026-06-25,
+						Ubicado en el CPA.",Hoy 09:46,https://www.vitoria-gasteiz.org/docs/g06/6834/8255/8255_clip.jpeg,https://www.vitoria-gasteiz.org/docs/g06/6834/8255/8255.jpeg,fotos_perros/8255.jpg,activo,2026-06-25,
 8257,Setter Inglés,Hembra,Mediano,Joven (7 meses - 2 años),":
 						Ubicado en el CPA. 
 
@@ -112,7 +112,7 @@ id,raza,sexo,tamano,edad,nota,fecha_publicacion,img_url,img_url_full,local_img_p
 8259,Syberian husky,Hembra,Mediano,Adulto (2 - 10 años),":
 						Ubicado en el CPA.",29 junio 2026,https://www.vitoria-gasteiz.org/docs/g06/6838/8259/8259_clip.jpeg,https://www.vitoria-gasteiz.org/docs/g06/6838/8259/8259.jpeg,fotos_perros/8259.jpg,activo,2026-06-29,
 8264,Mestizo,Hembra,Mediano,Viejo (10 años o más),":
-						Ubicado en el CPA.",15 julio 2026,https://www.vitoria-gasteiz.org/docs/g06/6843/8264/8264_clip.jpeg,https://www.vitoria-gasteiz.org/docs/g06/6843/8264/8264.jpeg,fotos_perros/8264.jpg,activo,2026-06-30,
+						Ubicado en el CPA.",Hoy 09:45,https://www.vitoria-gasteiz.org/docs/g06/6843/8264/8264_clip.jpeg,https://www.vitoria-gasteiz.org/docs/g06/6843/8264/8264.jpeg,fotos_perros/8264.jpg,activo,2026-06-30,
 8271,Sabueso Español,Macho,Mediano,Joven (7 meses - 2 años),":
 						Ubicado en el CPA. 
 
@@ -125,31 +125,35 @@ id,raza,sexo,tamano,edad,nota,fecha_publicacion,img_url,img_url_full,local_img_p
 						Ubicado en el CPA. 
 
  Pendiente de cumplir 15 días legales de retención.",12 julio 2026,https://www.vitoria-gasteiz.org/docs/g06/6862/8288/8288_clip.JPG,https://www.vitoria-gasteiz.org/docs/g06/6862/8288/8288.JPG,fotos_perros/8288.jpg,activo,2026-07-12,
-8292,Mestizo,Hembra,Pequeño,Cachorro (0 - 7 meses),":
+8292,Mastin Español,Hembra,Grande,Cachorro (0 - 7 meses),":
 						Ubicado en el CPA. 
 
  Pendiente de cumplir 15 días legales de retención.",20 julio 2026,https://www.vitoria-gasteiz.org/docs/g06/6865/8292/8292_clip.JPG,https://www.vitoria-gasteiz.org/docs/g06/6865/8292/8292.JPG,fotos_perros/8292.jpg,activo,2026-07-20,
-8293,Mestizo,Macho,Pequeño,Cachorro (0 - 7 meses),":
+8293,Mastin Español,Macho,Grande,Cachorro (0 - 7 meses),":
 						Ubicado en el CPA. 
 
- Pendiente de cumplir 15 días legales de retención.",20 julio 2026,https://www.vitoria-gasteiz.org/docs/g06/6865/8293/8293_clip.JPG,https://www.vitoria-gasteiz.org/docs/g06/6865/8293/8293.JPG,fotos_perros/8293.jpg,activo,2026-07-20,
-8294,Mestizo,Hembra,Pequeño,Cachorro (0 - 7 meses),":
+ Pendiente de cumplir 15 días legales de retención.",Hoy 09:44,https://www.vitoria-gasteiz.org/docs/g06/6865/8293/8293_clip.JPG,https://www.vitoria-gasteiz.org/docs/g06/6865/8293/8293.JPG,fotos_perros/8293.jpg,activo,2026-07-20,
+8294,Mastin Español,Hembra,Grande,Cachorro (0 - 7 meses),":
 						Ubicado en el CPA. 
 
- Pendiente de cumplir 15 días legales de retención.",20 julio 2026,https://www.vitoria-gasteiz.org/docs/g06/6865/8294/8294_clip.JPG,https://www.vitoria-gasteiz.org/docs/g06/6865/8294/8294.JPG,fotos_perros/8294.jpg,activo,2026-07-20,
-8295,Mestizo,Macho,Pequeño,Cachorro (0 - 7 meses),":
+ Pendiente de cumplir 15 días legales de retención.",Hoy 09:44,https://www.vitoria-gasteiz.org/docs/g06/6865/8294/8294_clip.JPG,https://www.vitoria-gasteiz.org/docs/g06/6865/8294/8294.JPG,fotos_perros/8294.jpg,activo,2026-07-20,
+8295,Mastin Español,Macho,Grande,Cachorro (0 - 7 meses),":
 						Ubicado en el CPA. 
 
- Pendiente de cumplir 15 días legales de retención.",20 julio 2026,https://www.vitoria-gasteiz.org/docs/g06/6865/8295/8295_clip.JPG,https://www.vitoria-gasteiz.org/docs/g06/6865/8295/8295.JPG,fotos_perros/8295.jpg,activo,2026-07-20,
-8296,Mestizo,Macho,Pequeño,Cachorro (0 - 7 meses),":
+ Pendiente de cumplir 15 días legales de retención.",Hoy 09:44,https://www.vitoria-gasteiz.org/docs/g06/6865/8295/8295_clip.JPG,https://www.vitoria-gasteiz.org/docs/g06/6865/8295/8295.JPG,fotos_perros/8295.jpg,activo,2026-07-20,
+8296,Mastin Español,Macho,Grande,Cachorro (0 - 7 meses),":
 						Ubicado en el CPA. 
 
- Pendiente de cumplir 15 días legales de retención.",20 julio 2026,https://www.vitoria-gasteiz.org/docs/g06/6865/8296/8296_clip.JPG,https://www.vitoria-gasteiz.org/docs/g06/6865/8296/8296.JPG,fotos_perros/8296.jpg,activo,2026-07-20,
+ Pendiente de cumplir 15 días legales de retención.",Hoy 09:44,https://www.vitoria-gasteiz.org/docs/g06/6865/8296/8296_clip.JPG,https://www.vitoria-gasteiz.org/docs/g06/6865/8296/8296.JPG,fotos_perros/8296.jpg,activo,2026-07-20,
 8298,Mestizo,Macho,Mediano,Cachorro (0 - 7 meses),":
-						Ubicado en el CPA. 
+						Pendiente de cumplir 15 días legales de retención. 
 
- Pendiente de cumplir 15 días legales de retención.",16 julio 2026,https://www.vitoria-gasteiz.org/docs/g06/6866/8298/8298_clip.JPG,https://www.vitoria-gasteiz.org/docs/g06/6866/8298/8298.JPG,fotos_perros/8298.jpg,activo,2026-07-16,
+ Preadoptado - N [+]",Hoy 09:52,https://www.vitoria-gasteiz.org/docs/g06/6866/8298/8298_clip.JPG,https://www.vitoria-gasteiz.org/docs/g06/6866/8298/8298.JPG,fotos_perros/8298.jpg,preadoptado,2026-07-16,
 8311,Mestizo,Hembra,Grande,Adulto (2 - 10 años),":
 						Ubicado en el CPA. 
 
- Pendiente de cumplir 15 días legales de retención.",18 julio 2026,https://www.vitoria-gasteiz.org/docs/g06/6874/8311/8311_clip.JPG,https://www.vitoria-gasteiz.org/docs/g06/6874/8311/8311.JPG,fotos_perros/8311.jpg,activo,2026-07-18,
+ Pendiente de cumplir 15 días legales de retención.",Hoy 09:44,https://www.vitoria-gasteiz.org/docs/g06/6874/8311/8311_clip.JPG,https://www.vitoria-gasteiz.org/docs/g06/6874/8311/8311.JPG,fotos_perros/8311.jpg,activo,2026-07-18,
+8319,Mestizo,Macho,Pequeño,Adulto (2 - 10 años),":
+						Ubicado en el CPA. 
+
+ Pendiente de cumplir 15 días legales de retención.",Hoy 10:02,https://www.vitoria-gasteiz.org/docs/g06/6882/8319/8319_clip.jpeg,https://www.vitoria-gasteiz.org/docs/g06/6882/8319/8319.jpeg,fotos_perros/8319.jpg,activo,2026-07-23,
