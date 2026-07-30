@@ -39,7 +39,7 @@ El scraper envía automáticamente:
 
 ## ⏱️ Automatización con GitHub Actions
 
-El workflow `.github/workflows/scrape.yml` ejecuta el scraper **cada 6 horas** automáticamente y también se puede ejecutar manualmente desde la pestaña Actions.
+El workflow `.github/workflows/scrape.yml` se ejecuta manualmente desde la pestaña Actions o mediante una petición externa de cron-job.org.
 
 ⚠️ **IMPORTANTE**: Antes del primer despliegue, añade los secretos en GitHub:
 1. Ve a tu repositorio en GitHub

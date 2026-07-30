@@ -1,10 +1,7 @@
-name: Scrapeo programado de perros
+name: Scrapeo manual de perros
 
 on:
-  schedule:
-    # Ejecutar cada 15 minutos
-    - cron: "*/15 * * * *"
-  workflow_dispatch:       # Permite ejecución manual desde GitHub
+  workflow_dispatch:       # Permite ejecución manual desde GitHub o cron-job.org
 
 permissions:
   contents: write
