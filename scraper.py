@@ -1,4 +1,5 @@
 import os
+import time
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -22,23 +23,37 @@ CSV_FILE = "perros_vitoria_historico.csv"
 
 os.makedirs(IMG_DIR, exist_ok=True)
 
+# Configuramos cabeceras similares a las de un navegador para evitar bloqueos
 headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+    "Accept-Language": "es-ES,es;q=0.9,en;q=0.8",
 }
 
 
-def get_soup(url):
-    """Realiza la petición GET y devuelve un objeto BeautifulSoup."""
-    response = requests.get(url, headers=headers, timeout=15)
-    if response.status_code != 200:
-        print(f"  Error HTTP {response.status_code} en {url}")
-        return None
-    return BeautifulSoup(response.text, "html.parser")
+def get_soup(url, retries=3, delay=5):
+    """Realiza la petición GET con reintentos y devuelve un objeto BeautifulSoup."""
+    for attempt in range(1, retries + 1):
+        try:
+            response = requests.get(url, headers=headers, timeout=15)
+            if response.status_code == 200:
+                return BeautifulSoup(response.text, "html.parser")
+            print(f"  Aviso: HTTP {response.status_code} en {url} (intento {attempt}/{retries})")
+        except requests.RequestException as e:
+            print(f"  Fallo de conexión al acceder a {url} (intento {attempt}/{retries}): {e}")
+
+        if attempt < retries:
+            wait_time = delay * attempt
+            print(f"  Esperamos {wait_time}s antes de reintentar...")
+            time.sleep(wait_time)
+
+    print(f"  No se pudo obtener respuesta tras {retries} intentos en {url}")
+    return None
 
 
 def parse_dog_card(card):
     """Extrae los datos de un perro desde un <li class='gallery__item'>."""
-    # --- ID (título) ---
+    # Obtenemos el identificador numérico
     title_el = card.find("div", class_="gallery__item-title")
     if not title_el:
         return None
@@ -46,13 +61,13 @@ def parse_dog_card(card):
     if not dog_id.isdigit():
         return None
 
-    # --- Textos (Raza, Sexo, Tamaño, Edad) ---
+    # Extraemos características básicas (Raza, Sexo, Tamaño, Edad)
     text_divs = card.find_all("div", class_="gallery__item-text")
     data = {"id": dog_id, "raza": None, "sexo": None, "tamano": None, "edad": None}
     for div in text_divs:
-        # Normalizar whitespace: cualquier secuencia de \n\r\t espacios -> un solo espacio
+        # Normalizamos espacios en blanco
         raw = ' '.join(div.get_text(strip=False).split())
-        # El texto viene como "Raza : Sabueso Español" -> separar por ":"
+        # Separamos clave y valor
         if ":" in raw:
             key, _, valor = raw.partition(":")
             key = key.strip()
@@ -61,11 +76,11 @@ def parse_dog_card(card):
             if key in mapping:
                 data[mapping[key]] = valor
 
-    # Si no tiene raza, descartamos
+    # Si no dispone de raza, descartamos la ficha
     if not data["raza"]:
         return None
 
-    # --- Nota ---
+    # Recogemos posibles notas adicionales
     foot_divs = card.find_all("div", class_="gallery__item-foot")
     notas = []
     for fd in foot_divs:
@@ -75,21 +90,21 @@ def parse_dog_card(card):
             notas.append(nota_val)
     data["nota"] = "; ".join(notas) if notas else None
 
-    # --- Etiqueta ---
+    # Extraemos la etiqueta o distintivo si existe
     etiqueta_el = card.find(class_=lambda c: c and ('etiqueta' in c.lower() or 'label' in c.lower() or 'badge' in c.lower()))
     etiqueta_text = etiqueta_el.get_text(strip=True) if etiqueta_el else ""
     if not etiqueta_text and "preadoptado" in card.get_text().lower():
         etiqueta_text = "preadoptado"
     data["etiqueta"] = etiqueta_text
 
-    # --- Fecha de publicación ---
+    # Obtenemos la fecha de publicación
     data["fecha_publicacion"] = None
     for fd in foot_divs:
         txt = fd.get_text(strip=True)
         if txt and not txt.startswith("Nota"):
             data["fecha_publicacion"] = txt
 
-    # --- Imagen ---
+    # Gestionamos las URLs de imagen
     img_tag = card.find("img", class_="gallery__item-image")
     data["img_url"] = None
     data["img_url_full"] = None
@@ -137,10 +152,11 @@ def sync_scraped_data():
     today_str = datetime.now().strftime("%Y-%m-%d")
     all_dogs = []
 
-    # --- 1. Scrapear la primera página ---
+    # Scrapeamos la primera página
     print("Scrapeando página 1...")
     soup = get_soup(LIST_URL)
     if soup is None:
+        print("Cancelamos la sincronización para proteger el histórico por fallo en la web.")
         return
 
     cards = soup.find_all("li", class_="gallery__item")
@@ -150,16 +166,19 @@ def sync_scraped_data():
         if dog_data:
             all_dogs.append(dog_data)
 
-    # --- 2. Paginación ---
+    # Gestionamos la paginación si hay más páginas
     total = total_pages(soup)
     if total > 1:
         for page in range(2, total + 1):
+            time.sleep(2)  # Pausa de cortesía para no saturar el servidor municipal
             offset = (page - 1) * 10
             page_url = f"{BASE_URL}/g06-02w/animal/list?especie.id=1&offset={offset}&max=10"
             print(f"Scrapeando página {page} (offset={offset})...")
             soup_p = get_soup(page_url)
             if soup_p is None:
-                continue
+                print(f"Error: no se pudo obtener la página {page}.")
+                print("Cancelamos la sincronización para evitar marcar perros como desaparecidos por error.")
+                return
             cards_p = soup_p.find_all("li", class_="gallery__item")
             print(f"  Perros encontrados: {len(cards_p)}")
             for card in cards_p:
@@ -173,7 +192,7 @@ def sync_scraped_data():
 
     print(f"Total perros scrapeados: {len(all_dogs)}")
 
-    # --- 3. Crear DataFrame con la captura de hoy ---
+    # Creamos el DataFrame con la captura de hoy
     df_current = pd.DataFrame(all_dogs).set_index("id")
     df_current["estado"] = df_current.apply(
         lambda row: "preadoptado" if (row.get("nota") and "preadoptado" in str(row["nota"]).lower()) or (row.get("etiqueta") and "preadoptado" in str(row["etiqueta"]).lower()) else "activo",
@@ -182,7 +201,7 @@ def sync_scraped_data():
     df_current["fecha_deteccion"] = today_str
     df_current["fecha_desaparicion"] = None
 
-    # --- 4. Cargar CSV maestro o crearlo ---
+    # Cargamos el CSV maestro o lo creamos si es la primera vez
     if os.path.exists(CSV_FILE):
         df_master = pd.read_csv(CSV_FILE, dtype={"id": str}).set_index("id")
         for col in ["estado", "fecha_desaparicion"]:
@@ -193,8 +212,7 @@ def sync_scraped_data():
         print(f"Archivo inicial creado con {len(df_current)} perros activos.")
         return
 
-    # --- 5. Detectar bajas (solo cuando el anuncio desaparece por completo) ---
-    # Incluye tanto activos como preadoptados: si ya no aparecen en la web, es baja
+    # Detectamos bajas solo cuando el anuncio desaparece por completo del catálogo
     perros_en_seguimiento = df_master[df_master["estado"].isin(["activo", "preadoptado"])].index
     perros_hoy = df_current.index
     ids_desaparecidos = perros_en_seguimiento.difference(perros_hoy)
@@ -204,17 +222,17 @@ def sync_scraped_data():
         df_master.loc[ids_desaparecidos, "estado"] = "desaparecido"
         df_master.loc[ids_desaparecidos, "fecha_desaparicion"] = today_str
 
-    # --- 6. Detectar perros NUEVOS (no estaban en el maestro antes del upsert) ---
+    # Detectamos perros nuevos no presentes previamente en el maestro
     ids_nuevos = perros_hoy.difference(df_master.index)
     nuevos_df = df_current.loc[ids_nuevos].reset_index().to_dict("records") if not ids_nuevos.empty else []
 
-    # --- 7. Detectar perros que pasan de activo a preadoptado ---
+    # Detectamos perros que pasan de activo a preadoptado
     ids_activos_antes = df_master[df_master["estado"] == "activo"].index
     ids_preadoptados_hoy = df_current[df_current["estado"] == "preadoptado"].index
     ids_nuevos_preadoptados = ids_preadoptados_hoy.intersection(ids_activos_antes).difference(ids_nuevos)
     preadoptados_df = df_current.loc[ids_nuevos_preadoptados].reset_index().to_dict("records") if not ids_nuevos_preadoptados.empty else []
 
-    # --- 8. Upsert de datos nuevos/actualizados ---
+    # Actualizamos o insertamos los registros con los datos actuales
     for idx, row in df_current.iterrows():
         if idx in df_master.index:
             df_master.loc[idx, ["raza", "sexo", "tamano", "edad", "nota",
@@ -228,11 +246,11 @@ def sync_scraped_data():
         else:
             df_master.loc[idx] = row
 
-    # --- 9. Guardar CSV ---
+    # Guardamos el CSV maestro ordenado
     df_master.sort_index().to_csv(CSV_FILE, encoding="utf-8")
     print(f"Sincronización finalizada. Perros en la web hoy: {len(df_current)}.")
 
-    # --- 10. Notificaciones Telegram ---
+    # Enviamos las notificaciones correspondientes por Telegram
     if not ids_nuevos.empty:
         print(f"Notificando {len(ids_nuevos)} perro(s) nuevo(s)...")
         notify_new_dogs(nuevos_df)
